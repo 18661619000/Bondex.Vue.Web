@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import { UserLayout, BasicLayout, BlankLayout } from '@/layouts'
+import { UserLayout, BasicLayout, BlankLayout, PageView } from '@/layouts'
 import { bxAnaalyse } from '@/core/icons'
 
 const RouteView = {
@@ -260,10 +260,10 @@ export const asyncRouterMap = [
             ]
           }
         ]
-      }
+      },
 
       // other
-      /*
+
       {
         path: '/other',
         name: 'otherPage',
@@ -323,7 +323,7 @@ export const asyncRouterMap = [
           }
         ]
       }
-      */
+
     ]
   },
   {

@@ -6,7 +6,8 @@
           <span class="title" style="font-size:30px;">身份认证处理中...</span>
         </a>
     </div>
-    <a-form v-if="!token"
+    <a-form
+      v-if="!token"
       id="formLogin"
       class="user-layout-login"
       ref="formLogin"
@@ -120,8 +121,10 @@
 </template>
 
 <script>
+  import storage from 'store'
 import md5 from 'md5'
 import TwoStepCaptcha from '@/components/tools/TwoStepCaptcha'
+import { ACCESS_TOKEN, LOGIN_USER } from '@/store/mutation-types'
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
 import { getSmsCaptcha, get2step, getCasToken } from '@/api/login'
@@ -154,7 +157,6 @@ export default {
     if (this.token) {
         getCasToken(this.token).then(res => {
           if (res.success) {
-            debugger
             storage.set(ACCESS_TOKEN, this.token, 7 * 24 * 60 * 60 * 1000)
             storage.set(LOGIN_USER, res.message[0], 7 * 24 * 60 * 60 * 1000)
             this.loginSuccess()

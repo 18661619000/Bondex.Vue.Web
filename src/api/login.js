@@ -87,3 +87,11 @@ export function getCasToken (token) {
     method: 'get'
   })
 }
+
+export function getUserByEmail (email) {
+  return request({
+    url: 'http://frameworkapi.bondex.com.cn:8000/Api/User/GetUserByEmail',
+    params: { email: email },
+    method: 'get'
+  })
+}
