@@ -10,7 +10,8 @@ const userApi = {
   SendSmsErr: '/account/sms_err',
   // get my info
   UserInfo: '/user/info',
-  UserMenu: '/user/nav'
+  UserMenu: '/user/nav',
+  CasTokenValidate: 'http://cas.bondex.com.cn:8080/castokenValidate.jsp'
 }
 
 /**
@@ -76,5 +77,13 @@ export function get2step (parameter) {
     url: userApi.twoStepCode,
     method: 'post',
     data: parameter
+  })
+}
+
+export function getCasToken (token) {
+  return request({
+    url: userApi.CasTokenValidate,
+    params: { token: token },
+    method: 'get'
   })
 }

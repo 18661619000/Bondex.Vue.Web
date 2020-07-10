@@ -1,6 +1,12 @@
 <template>
   <div class="main">
-    <a-form
+    <div v-if="token" :class="['user-layout-login']" style="text-align:center;">
+        <a href="/">
+          <!--<img src="~@/assets/logo.svg" class="logo" alt="logo" width="200" />-->
+          <span class="title" style="font-size:30px;">身份认证处理中...</span>
+        </a>
+    </div>
+    <a-form v-if="!token"
       id="formLogin"
       class="user-layout-login"
       ref="formLogin"
@@ -118,7 +124,7 @@ import md5 from 'md5'
 import TwoStepCaptcha from '@/components/tools/TwoStepCaptcha'
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
-import { getSmsCaptcha, get2step } from '@/api/login'
+import { getSmsCaptcha, get2step, getCasToken } from '@/api/login'
 
 export default {
   components: {
@@ -126,6 +132,7 @@ export default {
   },
   data () {
     return {
+      token: this.$route.query.token,
       customActiveKey: 'tab1',
       loginBtn: false,
       // login type: 0 email, 1 username, 2 telephone
@@ -144,6 +151,19 @@ export default {
     }
   },
   created () {
+    if (this.token) {
+        getCasToken(this.token).then(res => {
+          if (res.success) {
+            debugger
+            storage.set(ACCESS_TOKEN, this.token, 7 * 24 * 60 * 60 * 1000)
+            storage.set(LOGIN_USER, res.message[0], 7 * 24 * 60 * 60 * 1000)
+            this.loginSuccess()
+          } else {
+            this.requestFailed()
+          }
+        })
+      }
+
     get2step({ })
       .then(res => {
         this.requiredTwoStepCaptcha = res.result.stepCode
