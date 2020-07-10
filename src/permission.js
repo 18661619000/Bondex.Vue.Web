@@ -13,7 +13,6 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 const whiteList = ['login', 'register', 'registerResult', '404', '500'] // no redirect whitelist
 const loginRoutePath = '/user/login'
 const defaultRoutePath = '/dashboard/workplace'
-const CasAuthUrl = 'http://172.16.75.156:8001/CasAuth/SignOut?returnUrl='
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
@@ -54,8 +53,7 @@ router.beforeEach((to, from, next) => {
             })
             // 失败时，获取用户信息失败时，调用登出，来清空历史保留信息
             store.dispatch('Logout').then(() => {
-              // next({ path: loginRoutePath, query: { redirect: to.fullPath } })
-              window.location.href = CasAuthUrl + window.location.origin + loginRoutePath
+              next({ path: loginRoutePath, query: { redirect: to.fullPath } })
             })
           })
       } else {
@@ -65,14 +63,9 @@ router.beforeEach((to, from, next) => {
   } else {
     if (whiteList.includes(to.name)) {
       // 在免登录白名单，直接进入
-      if (to.name === 'login' && to.query.token) {
-        next()
-      } else {
-        window.location.href = CasAuthUrl + window.location.origin + loginRoutePath
-      }
+      next()
     } else {
-      // next({ path: loginRoutePath, query: { redirect: to.fullPath } })
-      window.location.href = CasAuthUrl + window.location.origin + loginRoutePath
+      next({ path: loginRoutePath, query: { redirect: to.fullPath } })
       NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
     }
   }

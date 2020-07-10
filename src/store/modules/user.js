@@ -442,6 +442,9 @@ const user = {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           storage.remove(ACCESS_TOKEN)
+          setTimeout(() => {
+            window.location.href = 'https://wol.bondex.com.cn/casclient/logout.jsp'
+          }, 300)
         })
       })
     }
