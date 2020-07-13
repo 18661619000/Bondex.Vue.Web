@@ -1,10 +1,7 @@
 <template>
   <div class="main">
     <div v-if="token" :class="['user-layout-login']" style="text-align:center;">
-        <a href="/">
-          <!--<img src="~@/assets/logo.svg" class="logo" alt="logo" width="200" />-->
-          <span class="title" style="font-size:30px;">身份认证处理中...</span>
-        </a>
+      <a href="/"><span class="title" style="font-size:30px;">身份认证处理中...</span></a>
     </div>
     <a-form
       v-if="!token"
@@ -132,7 +129,7 @@ export default {
   },
   data () {
     return {
-      token: '1',
+      token: true,
       customActiveKey: 'tab1',
       loginBtn: false,
       // login type: 0 email, 1 username, 2 telephone

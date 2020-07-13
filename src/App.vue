@@ -25,11 +25,11 @@ export default {
   },
   mounted () {
     window.callback = (result) => {
+      console.log(result)
       if (result.success) {
         this.casLogin = true
         storage.set(ACCESS_TOKEN, result.message[0].token, 7 * 24 * 60 * 60 * 1000)
         storage.set(LOGIN_USER, result.message[0], 7 * 24 * 60 * 60 * 1000)
-        console.log(this.$router)
         if (this.$route.path === '/user/login') {
           this.$router.push({ path: '/' })
         }
