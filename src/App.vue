@@ -17,6 +17,7 @@ import { getCasToken } from '@/api/login'
 export default {
   data () {
     return {
+      casLogin: false
     }
   },
   created () {
@@ -25,33 +26,45 @@ export default {
   mounted () {
     window.callback = (result) => {
       if (result.success) {
+        this.casLogin = true
         storage.set(ACCESS_TOKEN, result.message[0].token, 7 * 24 * 60 * 60 * 1000)
         storage.set(LOGIN_USER, result.message[0], 7 * 24 * 60 * 60 * 1000)
-        this.$router.push({ path: '/' })
+        console.log(this.$router)
+        if (this.$route.path === '/user/login') {
+          this.$router.push({ path: '/' })
+        }
       } else {
+        this.casLogin = false
         store.dispatch('Logout').then(() => {
           this.$router.push({ path: '/user/login' })
         })
       }
     }
-
-    setTimeout(() => {
-      getCasToken(storage.get(ACCESS_TOKEN)).then(result => {
-        if (!result.success) {
-          store.dispatch('Logout').then(() => {
-            window.location.href = 'http://cas.bondex.com.cn:8080/login?service=' + window.location.origin + '/user/login'
-          })
-        }
-      })
-    }, 1000)
   },
   methods: {
     checkCasStatus () {
-     this.$jsonp('https://wol.bondex.com.cn/casclient/user.jsp', {}).then(result => {
+      this.$jsonp('http://wol.bondex.com.cn/casclient/user.jsp', {}).then(result => {
         console.log(result)
       }).catch(err => {
         console.log(err)
       })
+
+      setTimeout(() => {
+        getCasToken(storage.get(ACCESS_TOKEN)).then(result => {
+          if (!result.success) {
+            store.dispatch('Logout').then(() => {
+              window.location.href = 'http://cas.bondex.com.cn:8080/login?service=' + window.location.origin + '/user/login'
+            })
+          }
+        }).catch((err) => {
+          console.log(err)
+          if (!this.casLogin) {
+            store.dispatch('Logout').then(() => {
+              window.location.href = 'http://cas.bondex.com.cn:8080/login?service=' + window.location.origin + '/user/login'
+            })
+          }
+        })
+      }, 1000)
     }
   },
   computed: {
