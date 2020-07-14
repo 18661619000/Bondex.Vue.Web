@@ -1,5 +1,6 @@
 import storage from 'store'
-import { login, getUserByEmail, logout } from '@/api/login'
+import { login, logout } from '@/api/login'
+import { getUserByEmail } from '@/api/framework'
 import { ACCESS_TOKEN, LOGIN_USER } from '@/store/mutation-types'
 import { welcome, builder } from '@/utils/util'
 
