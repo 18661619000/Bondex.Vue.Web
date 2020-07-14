@@ -442,8 +442,14 @@ const user = {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           storage.remove(ACCESS_TOKEN)
+
+          var element = document.createElement('script')
+          element.src = 'https://wol.bondex.com.cn/casclient/logout.jsp?_=' + Math.random()
+          element.type = 'text/javascript'
+          document.head.appendChild(element)
+
           setTimeout(() => {
-            window.location.href = 'https://wol.bondex.com.cn/casclient/logout.jsp'
+            window.location.href = 'http://cas.bondex.com.cn:8080/login?service=' + window.location.origin + '/user/login'
           }, 300)
         })
       })

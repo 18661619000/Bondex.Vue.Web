@@ -35,9 +35,7 @@ export default {
         }
       } else {
         this.casLogin = false
-        store.dispatch('Logout').then(() => {
-          this.$router.push({ path: '/user/login' })
-        })
+        store.dispatch('Logout')
       }
     }
   },
@@ -52,16 +50,12 @@ export default {
       setTimeout(() => {
         getCasToken(storage.get(ACCESS_TOKEN)).then(result => {
           if (!result.success) {
-            store.dispatch('Logout').then(() => {
-              window.location.href = 'http://cas.bondex.com.cn:8080/login?service=' + window.location.origin + '/user/login'
-            })
+            store.dispatch('Logout')
           }
         }).catch((err) => {
           console.log(err)
           if (!this.casLogin) {
-            store.dispatch('Logout').then(() => {
-              window.location.href = 'http://cas.bondex.com.cn:8080/login?service=' + window.location.origin + '/user/login'
-            })
+            store.dispatch('Logout')
           }
         })
       }, 1000)
