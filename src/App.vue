@@ -58,7 +58,7 @@ export default {
             store.dispatch('Logout')
           }
         })
-      }, 1000)
+      }, 2000)
     }
   },
   computed: {
